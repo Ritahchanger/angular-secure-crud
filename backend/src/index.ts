@@ -10,6 +10,8 @@ import errorHandler from "./mddlewares/errorHandler";
 
 import authroute from "./routes/authroute";
 
+import todoRoute from "./routes/todoroutes"
+
 import connectDatabase from "./database/databaseConnection";
 
 import authenticateKey from "./mddlewares/authMiddleware";
@@ -38,6 +40,9 @@ app.use(errorHandler);
 app.use("/api/users",authroute);
 
 app.use(authenticateKey as RequestHandler);
+
+app.use("/api/todos",todoRoute);
+
 
 app.get("/api/users/get",(req:Request,res:Response)=>{
 

@@ -1,6 +1,7 @@
 import { NextFunction, Request,Response } from "express";
 
 import Todo from "../models/todo.model";
+import { todo } from "node:test";
 
 class TodoController {
 
@@ -38,7 +39,7 @@ class TodoController {
     public getTodo = async (req:Request,res:Response,next:NextFunction)=>{
 
         try{
-
+    
         }catch(error){
 
             next(error);
@@ -77,6 +78,61 @@ class TodoController {
 
         }
 
+
+    }
+
+    public deleteTodo = async (req:Request,res:Response,next:NextFunction)=>{
+
+        const { todoId  } = req.params;
+
+        try{
+            if(!todoId)  return res.status(400).json({success:false, message:'Enter todo id'});
+
+        const deleteTodo = await Todo.findByIdAndDelete(todoId);
+
+        if(!deleteTodo){
+
+            return res.status(404).json({success:false, message:'The todo was not found'});
+
+        }
+        return res.status(400).json({success:false, message:'Todo deleted successfully',deletedTodo:deleteTodo});
+        }
+        catch(error){
+
+            next(error);
+
+        }
+
+    }
+
+    public confirmTodo = async (req:Request,res:Response,next:NextFunction)=>{
+
+         const { todoId } = req.params;
+
+         try{
+            if(!todoId){
+
+                return res.status(400).json({success:false, message:'No todo id'});
+
+            }
+
+            const todo = await Todo.findById(todoId);
+
+            if(!todo){
+
+                return res.status(404).json({success:false, message:'Todo not found'});
+
+            }
+
+            todo.completed = true;
+
+            await todo.save();
+
+            return res.status(200).json({success:true, message:'Todo confirmed'});
+
+         }catch(error){
+            next(error);
+         }
 
     }
 
