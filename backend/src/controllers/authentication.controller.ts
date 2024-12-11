@@ -1,73 +1,100 @@
-import { NextFunction, Request,Response } from "express";
-
-import User from "../models/user.model"
-
+import { NextFunction, Request, RequestHandler, Response } from "express";
+import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 
-const signUp = async (req:Request,res:Response, next:NextFunction)=>{
+import dotenv from "dotenv"
 
-    try{
+import jwt from 'jsonwebtoken';
 
-        const { name,email,password,role } = req.body;
+dotenv.config()
 
+class AuthenticationController {
 
-        if(!name || !email || !password || !role){
+  
+    public signUp = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          
+            const { name, email, password, role } = req.body;
 
-            return res.status(400).json({message:"All fields are required"});
-
-        }
-
-        const existingUser = await User.findOne({email});
-
-        if(existingUser){
-
-            return res.status(400).json({message:"User already exists"});
-
-        }
-
-        const hashedPassword = await bcrypt.hash(password,12);
-
-
-        const newUser = new User({
-
-            name,
-
-            email,
-
-
-            password:hashedPassword,
-
-            role,
-
-
-        })
-
-        await newUser.save();
-
-        res.status(201).json({
-
-            message:"User created successfully",
-
-            user:{
-
-                name:newUser.name,
-
-                email:newUser.email,
-
-                role:newUser.role
-
+            
+            if (!name || !email || !password || !role) {
+                return res.status(400).json({ message: "All fields are required" });
             }
 
-        })
+           
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: "User already exists" });
+            }
 
+            
+            const hashedPassword = await bcrypt.hash(password, 12);
 
-    }catch(error){
+            const newUser = new User({
+                name,
+                email,
+                password: hashedPassword,
+                role,
+            });
 
-        next(error)
+          
+            await newUser.save();
 
+            res.status(201).json({
+                message: "User created successfully",
+                user: {
+                    name: newUser.name,
+                    email: newUser.email,
+                    role: newUser.role
+                }
+            });
+
+        } catch (error) {
+           
+            next(error);
+        }
     }
 
+    public login =  async (req:Request,res:Response,next:NextFunction)=>{
 
+        const { email,password } = req.body
+
+        try{
+            if(!email || !password){
+                return res.status(400).json({message:"Enter all fields"})
+            }
+            const user = await User.findOne({ email });
+    
+            if(!user){
+                return res.status(404).json({success:false,message:"User not found"});
+            }
+    
+            const hashedPassword = user.password;
+    
+            const isMatch = await bcrypt.compare(password, hashedPassword);  
+    
+            if(!isMatch){
+    
+                return res.status(404).json({success:false,message:"Wrong password"});
+    
+            }
+    
+            console.log(process.env.JWT_SECRET);
+            const token = jwt.sign(
+                { id: user.id, role: user.role },
+                 process.env.JWT_SECRET as string,
+                { expiresIn: '1h' }
+            );
+            
+            return res.status(200).json({success:true,message:'access granted',token:token})
+        }catch(error){
+            next(error)
+        }
+    }
 }
 
-export { signUp }
+const authenticationController = new AuthenticationController();
+
+export default authenticationController;
+
+console.log(process.env.JWT_SECRET)
