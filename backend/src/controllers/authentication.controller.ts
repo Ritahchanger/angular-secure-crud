@@ -6,6 +6,8 @@ import dotenv from "dotenv"
 
 import jwt from 'jsonwebtoken';
 
+
+
 dotenv.config()
 
 class AuthenticationController {
@@ -85,6 +87,19 @@ class AuthenticationController {
                  process.env.JWT_SECRET as string,
                 { expiresIn: '1h' }
             );
+
+            res.cookie('token',token,{
+
+                httpOnly:true,
+
+                secure:process.env.NODE_ENV === 'production',
+
+                sameSite:'strict' as const,
+
+                maxAge:3600000
+                
+
+            })
             
             return res.status(200).json({success:true,message:'access granted',token:token})
         }catch(error){

@@ -16,7 +16,12 @@ import connectDatabase from "./database/databaseConnection";
 
 import authenticateKey from "./mddlewares/authMiddleware";
 
+import cors from 'cors';
+
 dotenv.config();
+
+
+
 
 
 const app = express();
@@ -24,6 +29,20 @@ const app = express();
 
 const PORT: string | number = process.env.PORT || 8000;
 
+
+
+
+const corsOptions:cors.CorsOptions = {
+
+    origin:['http://localhost:4200'],
+    methods:['GET','POST','PUT','DELETE'],
+    allowedHeaders:['Content-Type','Authorization'],
+    credentials:true
+
+}
+
+
+app.use(cors(corsOptions));
 
 
 app.use(express.json())
