@@ -3,30 +3,29 @@
     'border-green-500': task.completed,
     'border-orange-500': !task.completed
   }"
-  class="text-white flex items-center justify-center h-[200px] flex-col bg-neutral-300 border-l-8 rounded-sm"
+  class="text-white flex items-center justify-center h-[200px] flex-col bg-neutral-300 border-l-8 rounded-sm p-4"
 >
-  <div>
-    <p class="font-semibold">
+  <div class="mb-4">
+    <p class="font-semibold text-lg">
       {{ task.task }}
     </p>
   </div>
 
-  @if(task.completed === true){
+  <div class="mb-4">
+    <button 
+      class="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+      (click)="confirmTodo()">
+      {{ task.completed ? 'Uncomplete' : 'Complete' }}
+    </button>
+  </div>
 
-  <button class="bg-orange-500 px-[1.3rem] py-[0.3rem]" (click)="confirmTodo()">
-    Uncomplete
-  </button>
-
-  } @else {
-
-  <button class="bg-orange-500 px-[1.3rem] py-[0.3rem]" (click)="confirmTodo()">
-    Complete
-  </button>
-  }
-
-  <div class="w-full flex justify-between items-center">
-    <button class="bg-blue-500 px-[1.3rem] py-[0.3rem]">view</button
-    ><button class="bg-blue-500 px-[1.3rem] py-[0.3rem]" (click)="deleteTodo()">
+  <div class="w-full flex justify-between items-center mt-4">
+    <button class="bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+      View
+    </button>
+    <button 
+      class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition-colors"
+      (click)="deleteTodo()">
       &times;
     </button>
   </div>
