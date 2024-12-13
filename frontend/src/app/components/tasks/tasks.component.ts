@@ -38,7 +38,7 @@ export class TasksComponent implements OnInit {
   deleteTodo(): void {
     this.gettodosService.deleteTodo(this.task._id as string).subscribe(
       () => {
-        alert('Task deleted successfully!');
+        
         this.taskDeleted.emit(this.task._id); 
       },
       (error) => {

@@ -20,7 +20,7 @@ This project is a full-stack application with the following features:
 
 - **Frontend**: Angular, TypeScript, HTML, CSS (Tailwind)
 - **Backend**: Express.js, Node.js, TypeScript
-- **Database**: (Insert database technology here if applicable)
+- **Database**: Mongo
 - **Authentication**: (Add authentication technology here if used)
 - **Other tools**: Docker (if applicable)
 

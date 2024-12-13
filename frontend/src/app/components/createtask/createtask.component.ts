@@ -33,7 +33,7 @@ export class CreatetaskComponent {
 
     this.todosService.addTodo(this.taskTodo).subscribe(
       (response) => {
-        alert('The task was added successfully');
+      
 
         this.taskTodo = '';
 
