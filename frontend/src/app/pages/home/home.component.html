@@ -1,18 +1,12 @@
 <app-navbar />
 
 <div class="max-w-[900px] my-2rem mx-auto">
-  <app-createtask />
-  <div class="grid grid-cols-4 gap-[1rem] items-center mt-[1rem]">
-
-
- 
+  <app-createtask (tasksUpdated)="onTasksUpdated($event)" />
+  <div
+    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[1rem] items-center mt-[1rem]"
+  >
     @for(task of tasks; track task._id){
-
-        <app-tasks [task]="task"/>
-
+    <app-tasks [task]="task" (taskDeleted)="updateTasks($event)" />
     }
-
-
-   
   </div>
 </div>

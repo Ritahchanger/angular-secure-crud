@@ -1,0 +1,33 @@
+<div
+  [ngClass]="{
+    'border-green-500': task.completed,
+    'border-orange-500': !task.completed
+  }"
+  class="text-white flex items-center justify-center h-[200px] flex-col bg-neutral-300 border-l-8 rounded-sm"
+>
+  <div>
+    <p class="font-semibold">
+      {{ task.task }}
+    </p>
+  </div>
+
+  @if(task.completed === true){
+
+  <button class="bg-orange-500 px-[1.3rem] py-[0.3rem]" (click)="confirmTodo()">
+    Uncomplete
+  </button>
+
+  } @else {
+
+  <button class="bg-orange-500 px-[1.3rem] py-[0.3rem]" (click)="confirmTodo()">
+    Complete
+  </button>
+  }
+
+  <div class="w-full flex justify-between items-center">
+    <button class="bg-blue-500 px-[1.3rem] py-[0.3rem]">view</button
+    ><button class="bg-blue-500 px-[1.3rem] py-[0.3rem]" (click)="deleteTodo()">
+      &times;
+    </button>
+  </div>
+</div>
