@@ -3,7 +3,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 
+import Swal from 'sweetalert2'
+
 import { Router } from '@angular/router';
+
+import { SignupserviceService } from './signupservice.service';
+
+import { IUserRequest } from '../../FModels/user.request.interface';
 
 interface IUser{
 
@@ -13,7 +19,7 @@ interface IUser{
 
   password:string;
 
-  roles: 'admin' | 'user' | 'manager' | string
+  role: 'admin' | 'user' | 'manager' | string
 
 }
 @Component({
@@ -30,10 +36,10 @@ export class SignupComponent {
     name:"",
     email:"",
     password:"",
-    roles:""
+    role:""
   }
 
-  constructor(private router:Router){}
+  constructor(private router:Router, private singupService: SignupserviceService){}
 
   submit(event:SubmitEvent):void{
 
@@ -49,9 +55,36 @@ export class SignupComponent {
 
     }else{
 
+
+      this.singupService.registerUser(this.formData).subscribe((response)=>{
+
+        if(response.success){
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful',
+            text: 'You have successfully registered!',
+          }).then(() => {
+            
+            this.router.navigate(['/']);
+          });
+
+        }else{
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            text: response.message || 'There was an issue with the registration. Please try again.',
+          });
+
+        }
+
+
+      },(error)=>{throw new error('error')},()=>{console.log('Registration occurred')});
+
       console.log('The form has been submitted successfully:formdata=>',this.formData);
 
-      this.router.navigate(['/'])
+      // this.router.navigate(['/'])
 
     }
 
