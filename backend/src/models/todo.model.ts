@@ -15,10 +15,11 @@ const todoSchema:mongoose.Schema = new mongoose.Schema(
             required:true
         },
         completed:{
-            type:String,
+            type:Boolean,
             default:false,
         },
         createdAt:{
+            default:Date.now,
             type:Date,
         }
 
