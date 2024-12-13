@@ -1,0 +1,20 @@
+<div>
+  <div>
+    <form action="#" class="flex justify-center items-center w-full mt-[3rem]" (submit)="submit($event)" >
+      <div class="w-[70%]">
+        <input
+          type="text"
+          name="task"
+          placeholder="Enter new task to do!"
+          id=""
+          [(ngModel)]="taskTodo"
+          class="border-b border-blue-500 w-full h-[40px] focus:outline-none focus:border-green-600"
+        />
+      </div>
+
+      <button type="submit" class="bg-blue-500 w-[20%] text-white px-[1rem] h-[40px]">
+        save task
+      </button>
+    </form>
+  </div>
+</div>
